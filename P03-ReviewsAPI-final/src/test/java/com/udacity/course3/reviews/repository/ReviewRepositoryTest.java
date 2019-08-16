@@ -39,7 +39,7 @@ public class ReviewRepositoryTest {
         assertThat(product.getId()).isNotNull();
         assertThat(review.getId()).isNotNull();
 
-        List<Review> reviews = reviewRepository.findReviewByProductId(product.getId());
+        List<Review> reviews = reviewRepository.findReviewsByProductId(product.getId());
         assertThat(reviews).isNotEmpty();
         assertThat(reviews).contains(review);
         Review returnedReview = reviews.get(reviews.indexOf(review));

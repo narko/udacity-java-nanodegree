@@ -2,16 +2,14 @@ package com.udacity.course3.reviews.controller;
 
 import com.udacity.course3.reviews.entity.Product;
 import com.udacity.course3.reviews.entity.Review;
+import com.udacity.course3.reviews.entity.mongo.ReviewInfo;
 import com.udacity.course3.reviews.repository.ProductRepository;
+import com.udacity.course3.reviews.repository.ReviewInfoRepository;
 import com.udacity.course3.reviews.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +22,8 @@ public class ReviewsController {
     // Wire JPA repositories here
     @Autowired
     ReviewRepository reviewRepository;
+    @Autowired
+    ReviewInfoRepository reviewInfoRepository;
     @Autowired
     ProductRepository productRepository;
 
@@ -44,8 +44,15 @@ public class ReviewsController {
         if (!optional.isPresent()) {
             return ResponseEntity.notFound().build();
         } else {
+            // save data JPA
             review.setProduct(optional.get());
-            return ResponseEntity.ok(reviewRepository.save(review));
+            reviewRepository.save(review);
+
+            // save data in MongoDb
+            ReviewInfo reviewInfo = new ReviewInfo(review);
+            reviewInfoRepository.save(reviewInfo);
+
+            return ResponseEntity.ok().build();
         }
     }
 
@@ -61,7 +68,7 @@ public class ReviewsController {
         if (!optionalProduct.isPresent()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(reviewRepository.findReviewByProductId(productId));
+            return ResponseEntity.ok(reviewRepository.findReviewsByProductId(productId));
         }
     }
 }
