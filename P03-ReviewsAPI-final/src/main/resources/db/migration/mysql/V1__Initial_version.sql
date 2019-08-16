@@ -1,0 +1,28 @@
+CREATE TABLE IF NOT EXISTS product (
+    id INT AUTO_INCREMENT,
+    name VARCHAR(255),
+    description VARCHAR(500),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS review (
+    id INT AUTO_INCREMENT,
+    title VARCHAR(255),
+    text VARCHAR(2000),
+    PRIMARY KEY (id),
+    product_id INT NOT NULL,
+    FOREIGN KEY (product_id)
+        REFERENCES product(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS comment (
+    id INT AUTO_INCREMENT,
+    title VARCHAR(255),
+    text VARCHAR(2000),
+    PRIMARY KEY (id),
+    review_id INT NOT NULL,
+    FOREIGN KEY (review_id)
+        REFERENCES review(id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
