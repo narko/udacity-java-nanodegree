@@ -3,6 +3,7 @@ package com.udacity.course3.reviews.repository;
 import com.udacity.course3.reviews.entity.Comment;
 import com.udacity.course3.reviews.entity.Product;
 import com.udacity.course3.reviews.entity.Review;
+import com.udacity.course3.reviews.entity.mongo.CommentInfo;
 import com.udacity.course3.reviews.entity.mongo.ReviewInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +36,7 @@ public class ReviewInfoRepositoryTest {
         comment1.setReview(review);
 
         ReviewInfo reviewInfo = new ReviewInfo(review);
-        reviewInfo.addComment(comment1);
+        reviewInfo.addComment(new CommentInfo(comment1));
 
         ReviewInfo savedReviewInfo = reviewInfoRepository.save(reviewInfo);
         assertEquals(reviewInfo.getTitle(), savedReviewInfo.getTitle());

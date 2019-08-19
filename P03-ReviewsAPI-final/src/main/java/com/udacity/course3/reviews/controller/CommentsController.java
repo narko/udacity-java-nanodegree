@@ -2,6 +2,7 @@ package com.udacity.course3.reviews.controller;
 
 import com.udacity.course3.reviews.entity.Comment;
 import com.udacity.course3.reviews.entity.Review;
+import com.udacity.course3.reviews.entity.mongo.CommentInfo;
 import com.udacity.course3.reviews.entity.mongo.ReviewInfo;
 import com.udacity.course3.reviews.repository.CommentRepository;
 import com.udacity.course3.reviews.repository.ProductRepository;
@@ -55,7 +56,7 @@ public class CommentsController {
             Optional<ReviewInfo> reviewInfoOptional = reviewInfoRepository.findById(reviewId.toString());
             if (reviewInfoOptional.isPresent()) {
                 ReviewInfo reviewInfo = reviewInfoOptional.get();
-                reviewInfo.addComment(comment);
+                reviewInfo.addComment(new CommentInfo(comment));
                 reviewInfoRepository.save(reviewInfo);
             }
 

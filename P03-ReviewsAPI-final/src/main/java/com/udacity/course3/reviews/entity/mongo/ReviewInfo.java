@@ -1,6 +1,5 @@
 package com.udacity.course3.reviews.entity.mongo;
 
-import com.udacity.course3.reviews.entity.Comment;
 import com.udacity.course3.reviews.entity.Product;
 import com.udacity.course3.reviews.entity.Review;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,7 +19,7 @@ public class ReviewInfo {
     private String title;
     private String text;
     private Product product;
-    private List<Comment> comments;
+    private List<CommentInfo> comments;
 
     public ReviewInfo() {
         comments = new ArrayList<>();
@@ -36,7 +35,7 @@ public class ReviewInfo {
         comments = new ArrayList<>();
     }
 
-    public void addComment(Comment comment) {
+    public void addComment(CommentInfo comment) {
         comments.add(comment);
     }
 
@@ -72,11 +71,11 @@ public class ReviewInfo {
         this.product = product;
     }
 
-    public List<Comment> getComments() {
+    public List<CommentInfo> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(List<CommentInfo> comments) {
         this.comments = comments;
     }
 }
