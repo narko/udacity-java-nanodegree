@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Spring REST controller for working with review entity.
@@ -68,7 +71,13 @@ public class ReviewsController {
         if (!optionalProduct.isPresent()) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(reviewRepository.findReviewsByProductId(productId));
+            List<Integer> reviewIds = reviewRepository.findReviewIdsByProductId(productId);
+            List<String> stringIds = new ArrayList<>(reviewIds.size());
+            reviewIds.forEach(id -> stringIds.add(id.toString()));
+            List<ReviewInfo> reviews = StreamSupport.stream(
+                    reviewInfoRepository.findAllById(stringIds).spliterator(), false).collect(Collectors.toList());
+
+            return ResponseEntity.ok(reviews);
         }
     }
 }
