@@ -27,7 +27,9 @@ public class ReviewInfo {
     }
 
     public ReviewInfo(Review review) {
-        this.id = review.getId().toString();
+        if (review.getId() != null) {
+            this.id = review.getId().toString();
+        }
         this.title = review.getTitle();
         this.text = review.getText();
         this.product = review.getProduct();

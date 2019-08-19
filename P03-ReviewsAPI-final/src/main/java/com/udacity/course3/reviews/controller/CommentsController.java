@@ -2,8 +2,10 @@ package com.udacity.course3.reviews.controller;
 
 import com.udacity.course3.reviews.entity.Comment;
 import com.udacity.course3.reviews.entity.Review;
+import com.udacity.course3.reviews.entity.mongo.ReviewInfo;
 import com.udacity.course3.reviews.repository.CommentRepository;
 import com.udacity.course3.reviews.repository.ProductRepository;
+import com.udacity.course3.reviews.repository.ReviewInfoRepository;
 import com.udacity.course3.reviews.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,8 @@ public class CommentsController {
     private ReviewRepository reviewRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private ReviewInfoRepository reviewInfoRepository;
 
     /**
      * Creates a comment for a review.
@@ -46,7 +50,16 @@ public class CommentsController {
             return ResponseEntity.notFound().build();
         } else {
             comment.setReview(reviewOptional.get());
-            return ResponseEntity.ok(commentRepository.save(comment));
+            commentRepository.save(comment);
+
+            Optional<ReviewInfo> reviewInfoOptional = reviewInfoRepository.findById(reviewId.toString());
+            if (reviewInfoOptional.isPresent()) {
+                ReviewInfo reviewInfo = reviewInfoOptional.get();
+                reviewInfo.addComment(comment);
+                reviewInfoRepository.save(reviewInfo);
+            }
+
+            return ResponseEntity.ok().build();
         }
     }
 
